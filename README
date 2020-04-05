@@ -1,0 +1,52 @@
+How to run this code from RAM?
+
+$ openocd -f openocd.cfg
+    Open On-Chip Debugger 0.10.0+dev-01157-gd6541a81-dirty (2020-04-01-20:52)
+    Licensed under GNU GPL v2
+    For bug reports, read
+            http://openocd.org/doc/doxygen/bugs.html
+    riscv.cpu
+    Info : ftdi: if you experience problems at higher adapter clocks, try the command "ftdi_tdo_sample_edge falling"
+    Info : clock speed 10000 kHz
+    Info : JTAG tap: riscv.cpu tap/device found: 0x20000913 (mfg: 0x489 (SiFive, Inc.), part: 0x0000, ver: 0x2)
+    Info : datacount=1 progbufsize=16
+    Info : Disabling abstract command reads from CSRs.
+    Info : Examined RISC-V core; found 1 harts
+    Info :  hart 0: XLEN=32, misa=0x40101105
+    Info : Listening on port 3333 for gdb connections
+    Ready for Remote Connections
+    Info : Listening on port 6666 for tcl connections
+    Info : Listening on port 4444 for telnet connections
+    Info : accepting 'telnet' connection on tcp/4444
+    Info : JTAG tap: riscv.cpu tap/device found: 0x20000913 (mfg: 0x489 (SiFive, Inc.), part: 0x0000, ver: 0x2)
+    Info : Disabling abstract command writes to CSRs.
+    shutdown command invoked
+    Info : dropped 'telnet' connection
+
+$ telnet localhost 4444
+    Trying 127.0.0.1...
+    Connected to localhost.
+    Escape character is '^]'.
+    Open On-Chip Debugger
+    > reset halt
+    JTAG tap: riscv.cpu tap/device found: 0x20000913 (mfg: 0x489 (SiFive, Inc.), part: 0x0000, ver: 0x2)
+    > mdw 0x80000000 8
+    0x80000000: 00000197 0a218193 00001517 ff850513 00001597 ff058593 00b57863 00052023 
+
+    > load_image taos.elf
+    204 bytes written at address 0x80000000
+    3892 bytes written at address 0x800000cc
+    downloaded 4096 bytes in 0.066149s (60.470 KiB/s)
+
+    > mdw 0x80000000 8
+    0x80000000: 00000197 0a218193 00001517 ff850513 00001597 ff058593 00b57863 00052023 
+
+    > resume 0x80000000
+    Disabling abstract command writes to CSRs.
+    > halt
+    > reg pc
+    pc (/32): 0x800000A0
+
+    > shutdown
+    shutdown command invoked
+    Connection closed by foreign host.
