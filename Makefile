@@ -24,7 +24,7 @@ LINKER_SCRIPT=-Tsrc/lds/virt.lds
 TYPE=release
 RUST_TARGET=./target/riscv32imac-unknown-none-elf/$(TYPE)
 LIBS=-L$(RUST_TARGET)
-SOURCES_ASM=$(wildcard src/asm32/*.S)
+SOURCES_ASM=$(wildcard src/asm/*.S)
 LIB=-l$(PROJECT_NAME) -lgcc
 OUT=$(PROJECT_NAME).elf
 
