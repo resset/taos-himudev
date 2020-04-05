@@ -35,7 +35,7 @@ QEMU=qemu-system-riscv32
 MACH=virt
 CPU=rv32
 CPUS=1
-MEM=128M
+MEM=16K
 DRIVE=hdd.dsk
 
 all:
