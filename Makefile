@@ -21,7 +21,7 @@ CFLAGS+=-march=rv32imac -mabi=ilp32
 CFLAGS+=-Wl,-Map=$(PROJECT_NAME).map
 INCLUDES=
 LINKER_SCRIPT=-Tsrc/lds/virt.lds
-TYPE=debug
+TYPE=release
 RUST_TARGET=./target/riscv32imac-unknown-none-elf/$(TYPE)
 LIBS=-L$(RUST_TARGET)
 SOURCES_ASM=$(wildcard src/asm32/*.S)
@@ -39,7 +39,7 @@ MEM=128M
 DRIVE=hdd.dsk
 
 all:
-	cargo build
+	cargo build --release
 	$(RISCV_GXX) $(CFLAGS) $(LINKER_SCRIPT) $(INCLUDES) -o $(OUT) $(SOURCES_ASM) $(LIBS) $(LIB)
 	$(RISCV_OBJDUMP) -S --disassemble $(OUT) > $(PROJECT_NAME).list
 	$(RISCV_SIZE) $(OUT)
