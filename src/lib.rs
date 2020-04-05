@@ -55,6 +55,16 @@ extern "C" fn abort() -> ! {
     }
 }
 
+unsafe fn mmio_write(address: usize, offset: usize, value: u32) {
+	let reg = address as *mut u32;
+	reg.add(offset).write_volatile(value);
+}
+
+unsafe fn mmio_read(address: usize, offset: usize) -> u32 {
+	let reg = address as *mut u32;
+	reg.add(offset).read_volatile()
+}
+
 // ///////////////////////////////////
 // / CONSTANTS
 // ///////////////////////////////////
@@ -64,6 +74,10 @@ extern "C" fn abort() -> ! {
 // ///////////////////////////////////
 #[no_mangle]
 extern "C" fn kmain() {
+    unsafe {
+        mmio_write(0x10012008, 0, 0x780000);
+        mmio_write(0x1001200c, 0, 0x780000);
+    }
     loop {
     }
 }
