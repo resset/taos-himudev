@@ -1,3 +1,88 @@
+✔ Run HiFive demo on HiFive board. @done (11.03.2020, 23:00:00)
 ✔ Add example FE310 instructions to boot.S. @done (6.04.2020, 00:32:34)
-✔ Execute code form RAM @done (6.04.2020, 00:47:34)
+✔ Run Rust-compiled binary from RAM of hIMUdev using FT2232H. @done (6.04.2020, 00:47:34)
 ✘ Try to run code form RAM on HiFive1. @cancelled (6.04.2020, 00:47:37) No need to, executed on hIMUdev.
+✔ Run HiFive demo on hIMUdev board from flash using J-Link. @done (7.04.2020, 23:00:00)
+✔ Run HiFive demo on hIMUdev board from flash using JTAG-lock-pick. @done (8.04.2020, 00:40:13)
+☐ Fix flash protect error: "ERROR: first sector must be <= last". This is why:
+    pillot@motionlegend:himudev-sifive-welcome$ telnet localhost 4444
+    Trying 127.0.0.1...
+    Connected to localhost.
+    Escape character is '^]'.
+    Open On-Chip Debugger
+    > flash info
+      flash info bank_id ['sectors']
+      flash protect bank_id first_block [last_block|'last'] ('on'|'off')
+
+    > flash info 0
+    #0 : fespi at 0x20000000, size 0x00400000, buswidth 0, chipwidth 0
+            #  0: 0x00000000 (0x10000 64kB) not protected
+            #  1: 0x00010000 (0x10000 64kB) not protected
+            #  2: 0x00020000 (0x10000 64kB) not protected
+            #  3: 0x00030000 (0x10000 64kB) not protected
+            #  4: 0x00040000 (0x10000 64kB) not protected
+            #  5: 0x00050000 (0x10000 64kB) not protected
+            #  6: 0x00060000 (0x10000 64kB) not protected
+            #  7: 0x00070000 (0x10000 64kB) not protected
+            #  8: 0x00080000 (0x10000 64kB) not protected
+            #  9: 0x00090000 (0x10000 64kB) not protected
+            # 10: 0x000a0000 (0x10000 64kB) not protected
+            # 11: 0x000b0000 (0x10000 64kB) not protected
+            # 12: 0x000c0000 (0x10000 64kB) not protected
+            # 13: 0x000d0000 (0x10000 64kB) not protected
+            # 14: 0x000e0000 (0x10000 64kB) not protected
+            # 15: 0x000f0000 (0x10000 64kB) not protected
+            # 16: 0x00100000 (0x10000 64kB) not protected
+            # 17: 0x00110000 (0x10000 64kB) not protected
+            # 18: 0x00120000 (0x10000 64kB) not protected
+            # 19: 0x00130000 (0x10000 64kB) not protected
+            # 20: 0x00140000 (0x10000 64kB) not protected
+            # 21: 0x00150000 (0x10000 64kB) not protected
+            # 22: 0x00160000 (0x10000 64kB) not protected
+            # 23: 0x00170000 (0x10000 64kB) not protected
+            # 24: 0x00180000 (0x10000 64kB) not protected
+            # 25: 0x00190000 (0x10000 64kB) not protected
+            # 26: 0x001a0000 (0x10000 64kB) not protected
+            # 27: 0x001b0000 (0x10000 64kB) not protected
+            # 28: 0x001c0000 (0x10000 64kB) not protected
+            # 29: 0x001d0000 (0x10000 64kB) not protected
+            # 30: 0x001e0000 (0x10000 64kB) not protected
+            # 31: 0x001f0000 (0x10000 64kB) not protected
+            # 32: 0x00200000 (0x10000 64kB) not protected
+            # 33: 0x00210000 (0x10000 64kB) not protected
+            # 34: 0x00220000 (0x10000 64kB) not protected
+            # 35: 0x00230000 (0x10000 64kB) not protected
+            # 36: 0x00240000 (0x10000 64kB) not protected
+            # 37: 0x00250000 (0x10000 64kB) not protected
+            # 38: 0x00260000 (0x10000 64kB) not protected
+            # 39: 0x00270000 (0x10000 64kB) not protected
+            # 40: 0x00280000 (0x10000 64kB) not protected
+            # 41: 0x00290000 (0x10000 64kB) not protected
+            # 42: 0x002a0000 (0x10000 64kB) not protected
+            # 43: 0x002b0000 (0x10000 64kB) not protected
+            # 44: 0x002c0000 (0x10000 64kB) not protected
+            # 45: 0x002d0000 (0x10000 64kB) not protected
+            # 46: 0x002e0000 (0x10000 64kB) not protected
+            # 47: 0x002f0000 (0x10000 64kB) not protected
+            # 48: 0x00300000 (0x10000 64kB) not protected
+            # 49: 0x00310000 (0x10000 64kB) not protected
+            # 50: 0x00320000 (0x10000 64kB) not protected
+            # 51: 0x00330000 (0x10000 64kB) not protected
+            # 52: 0x00340000 (0x10000 64kB) not protected
+            # 53: 0x00350000 (0x10000 64kB) not protected
+            # 54: 0x00360000 (0x10000 64kB) not protected
+            # 55: 0x00370000 (0x10000 64kB) not protected
+            # 56: 0x00380000 (0x10000 64kB) not protected
+            # 57: 0x00390000 (0x10000 64kB) not protected
+            # 58: 0x003a0000 (0x10000 64kB) not protected
+            # 59: 0x003b0000 (0x10000 64kB) not protected
+            # 60: 0x003c0000 (0x10000 64kB) not protected
+            # 61: 0x003d0000 (0x10000 64kB) not protected
+            # 62: 0x003e0000 (0x10000 64kB) not protected
+            # 63: 0x003f0000 (0x10000 64kB) not protected
+
+    FESPI flash information:
+      Device 'issi is25lp032' (ID 0x0016609d)
+
+    >
+☐ Run Rust-compiled binary from RAM of hIMUdev using JTAG-lock-pick.
