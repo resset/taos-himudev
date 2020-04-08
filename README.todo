@@ -4,7 +4,7 @@
 ✘ Try to run code form RAM on HiFive1. @cancelled (6.04.2020, 00:47:37) No need to, executed on hIMUdev.
 ✔ Run HiFive demo on hIMUdev board from flash using J-Link. @done (7.04.2020, 23:00:00)
 ✔ Run HiFive demo on hIMUdev board from flash using OpenOCD/JTAG-lock-pick. @done (8.04.2020, 00:40:13)
-☐ Fix flash protect error: "ERROR: first sector must be <= last". This is why:
+☐ Fix flash protect error: "ERROR: first sector must be <= last". This is why (probably Rev. A01 stuff):
     pillot@motionlegend:himudev-sifive-welcome$ telnet localhost 4444
     Trying 127.0.0.1...
     Connected to localhost.
@@ -88,5 +88,4 @@
 ✔ Run Rust-compiled binary from flash of hIMUdev using OpenOCD/JTAG-lock-pick with flash_write. @done (8.04.2020, 21:24:10)
 ☐ Run Rust-compiled binary from flash of hIMUdev using OpenOCD/JTAG-lock-pick with gdb.
 ☐ Run Rust-compiled binary from flash of hIMUdev using J-Link.
-☐ Run hIMUdev+Rust using J-Link.
-☐ Run hIMUdev+Rust using OpenOCD/JTAG-lock-pick.
+☐ Run UART example on hIMUdev.
