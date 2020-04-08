@@ -1,6 +1,6 @@
-How to run this code from RAM?
+How to run this code from RAM (OpenOCD)?
 
-$ openocd -f openocd.cfg
+    $ openocd -f openocd.cfg
     Open On-Chip Debugger 0.10.0+dev-01157-gd6541a81-dirty (2020-04-01-20:52)
     Licensed under GNU GPL v2
     For bug reports, read
@@ -23,7 +23,7 @@ $ openocd -f openocd.cfg
     shutdown command invoked
     Info : dropped 'telnet' connection
 
-$ telnet localhost 4444
+    $ telnet localhost 4444
     Trying 127.0.0.1...
     Connected to localhost.
     Escape character is '^]'.
@@ -31,7 +31,7 @@ $ telnet localhost 4444
     > reset halt
     JTAG tap: riscv.cpu tap/device found: 0x20000913 (mfg: 0x489 (SiFive, Inc.), part: 0x0000, ver: 0x2)
     > mdw 0x80000000 8
-    0x80000000: 00000197 0a218193 00001517 ff850513 00001597 ff058593 00b57863 00052023 
+    0x80000000: 00000197 0a218193 00001517 ff850513 00001597 ff058593 00b57863 00052023
 
     > load_image taos.elf
     204 bytes written at address 0x80000000
@@ -39,13 +39,41 @@ $ telnet localhost 4444
     downloaded 4096 bytes in 0.066149s (60.470 KiB/s)
 
     > mdw 0x80000000 8
-    0x80000000: 00000197 0a218193 00001517 ff850513 00001597 ff058593 00b57863 00052023 
+    0x80000000: 00000197 0a218193 00001517 ff850513 00001597 ff058593 00b57863 00052023
 
     > resume 0x80000000
     Disabling abstract command writes to CSRs.
     > halt
     > reg pc
     pc (/32): 0x800000A0
+
+    > shutdown
+    shutdown command invoked
+    Connection closed by foreign host.
+
+How to run this code from FLASH (OpenOCD)?
+
+    Make sure to use himudev_flash.lds linker script.
+
+    $ telnet localhost 4444
+    Trying 127.0.0.1...
+    Connected to localhost.
+    Escape character is '^]'.
+    Open On-Chip Debugger
+    > reset halt
+    JTAG tap: riscv.cpu tap/device found: 0x20000913 (mfg: 0x489 (SiFive, Inc.), part: 0x0000, ver: 0x2)
+    > flash write_image erase unlock taos.elf
+    Found flash device 'issi is25lp032' (ID 0x0016609d)
+    Disabling abstract command writes to CSRs.
+    auto erase enabled
+    auto unlock enabled
+    wrote 65536 bytes from file taos.elf in 2.526374s (25.333 KiB/s)
+
+    > reset run
+    JTAG tap: riscv.cpu tap/device found: 0x20000913 (mfg: 0x489 (SiFive, Inc.), part: 0x0000, ver: 0x2)
+    > halt
+    > reg pc
+    pc (/32): 0x200000AC
 
     > shutdown
     shutdown command invoked

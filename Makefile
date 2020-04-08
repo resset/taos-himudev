@@ -20,7 +20,7 @@ CFLAGS+=-static -ffreestanding -nostdlib -fno-rtti -fno-exceptions
 CFLAGS+=-march=rv32imac -mabi=ilp32
 CFLAGS+=-Wl,-Map=$(PROJECT_NAME).map
 INCLUDES=
-LINKER_SCRIPT=-Tsrc/lds/virt.lds
+LINKER_SCRIPT=-Tsrc/lds/himudev_flash.lds
 TYPE=release
 RUST_TARGET=./target/riscv32imac-unknown-none-elf/$(TYPE)
 LIBS=-L$(RUST_TARGET)

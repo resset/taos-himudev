@@ -85,7 +85,8 @@
       Device 'issi is25lp032' (ID 0x0016609d)
 
     >
-☐ Run Rust-compiled binary from flash of hIMUdev using OpenOCD/JTAG-lock-pick.
+✔ Run Rust-compiled binary from flash of hIMUdev using OpenOCD/JTAG-lock-pick with flash_write. @done (8.04.2020, 21:24:10)
+☐ Run Rust-compiled binary from flash of hIMUdev using OpenOCD/JTAG-lock-pick with gdb.
 ☐ Run Rust-compiled binary from flash of hIMUdev using J-Link.
 ☐ Run hIMUdev+Rust using J-Link.
 ☐ Run hIMUdev+Rust using OpenOCD/JTAG-lock-pick.
