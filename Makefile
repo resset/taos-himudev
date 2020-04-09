@@ -21,7 +21,7 @@ CFLAGS+=-march=rv32imac -mabi=ilp32
 CFLAGS+=-Wl,-Map=$(PROJECT_NAME).map
 INCLUDES=
 LINKER_SCRIPT=-Tsrc/lds/himudev_flash.lds
-TYPE=release
+TYPE=debug
 RUST_TARGET=./target/riscv32imac-unknown-none-elf/$(TYPE)
 LIBS=-L$(RUST_TARGET)
 SOURCES_ASM=$(wildcard src/asm/*.S)
@@ -39,7 +39,7 @@ MEM=16K
 DRIVE=hdd.dsk
 
 all:
-	cargo build --release
+	cargo build
 	$(RISCV_GXX) $(CFLAGS) $(LINKER_SCRIPT) $(INCLUDES) -o $(OUT) $(SOURCES_ASM) $(LIBS) $(LIB)
 	$(RISCV_OBJDUMP) -S --disassemble $(OUT) > $(PROJECT_NAME).list
 	$(RISCV_SIZE) $(OUT)
