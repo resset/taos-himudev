@@ -97,6 +97,7 @@ impl Uart {
         }
     }
 
+    #[no_mangle]
     pub fn put(&mut self, c: u8) {
         let ptr = self.base_address as *mut u32;
         unsafe {
