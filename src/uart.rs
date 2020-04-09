@@ -1,12 +1,12 @@
 // uart.rs
 // UART routines and driver
 
-use core::convert::TryInto;
+// use core::convert::TryInto;
 use core::fmt::Error;
 use core::fmt::Write;
 
 pub struct Uart {
-    base_address: usize, // REMOVEME: 0x10013000 for UART0
+    base_address: usize,
 }
 
 impl Write for Uart {
@@ -85,11 +85,8 @@ impl Uart {
             // // by clearing it to 0. Here, we just restore the original value of lcr.
             // ptr.add(3).write_volatile(lcr);
 
-
-
             let divisor: u32 = 555;
             ptr.add(6).write_volatile(divisor);
-
 
             // Set rxen bit to 1 to enable receive.
             let rxctrl = ptr.add(3).read_volatile();

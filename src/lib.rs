@@ -57,16 +57,6 @@ extern "C" fn abort() -> ! {
     }
 }
 
-unsafe fn mmio_write(address: usize, offset: usize, value: u32) {
-	let reg = address as *mut u32;
-	reg.add(offset).write_volatile(value);
-}
-
-unsafe fn mmio_read(address: usize, offset: usize) -> u32 {
-	let reg = address as *mut u32;
-	reg.add(offset).read_volatile()
-}
-
 // ///////////////////////////////////
 // / CONSTANTS
 // ///////////////////////////////////
@@ -75,28 +65,35 @@ unsafe fn mmio_read(address: usize, offset: usize) -> u32 {
 // / ENTRY POINT
 // ///////////////////////////////////
 #[no_mangle]
-extern "C" fn kmain() {
-    unsafe {
-        mmio_write(0x10012008, 0, 0x780000);
-        mmio_write(0x1001200c, 0, 0x000000);
+fn wait() {
+    let mut counter = 0 as u16;
+    counter -= 1;
+    while counter != 0 {
+        counter -= 1;
     }
+}
+
+#[no_mangle]
+extern "C" fn kmain() {
+
+    let mut gpio = gpio::Gpio::new();
+    gpio.init();
+    gpio.out_high(19);
+    gpio.out_high(20);
+    gpio.out_high(21);
+    gpio.out_high(22);
 
     let mut uart = uart::Uart::new(0x1001_3000);
     uart.init();
 
-    // FIXME: remove this after it starts working.
     loop {
-        unsafe {
-            mmio_write(0x1001200c, 0, 0x780000);
-        }
-        println!("taos v0.1");
+        gpio.out_high(19);
+        wait();
+        gpio.out_low(19);
+        wait();
     }
 
     loop {
-        unsafe {
-            mmio_write(0x1001200c, 0, 0x780000);
-        }
-
         if let Some(byte) = uart.get() {
             //use numtoa::NumToA;
             //let mut buffer = [0u8; 3];
@@ -155,4 +152,5 @@ extern "C" fn kmain() {
 // / RUST MODULES
 // ///////////////////////////////////
 
+pub mod gpio;
 pub mod uart;
