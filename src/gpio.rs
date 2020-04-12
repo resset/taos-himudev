@@ -29,7 +29,7 @@ impl Gpio {
     pub fn out_high(&mut self, pin: u8) {
         let ptr = self.base_address as *mut u32;
         unsafe {
-            let output_en = ptr.add(3).read_volatile();
+            let output_en = ptr.add(2).read_volatile();
             ptr.add(2).write_volatile(output_en | 1 << pin);
             let output_val = ptr.add(3).read_volatile();
             ptr.add(3).write_volatile(output_val | 1 << pin);
@@ -39,7 +39,7 @@ impl Gpio {
     pub fn out_low(&mut self, pin: u8) {
         let ptr = self.base_address as *mut u32;
         unsafe {
-            let output_en = ptr.add(3).read_volatile();
+            let output_en = ptr.add(2).read_volatile();
             ptr.add(2).write_volatile(output_en | 1 << pin);
             let output_val = ptr.add(3).read_volatile();
             ptr.add(3).write_volatile(output_val & !(1 << pin));

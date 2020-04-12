@@ -66,8 +66,7 @@ extern "C" fn abort() -> ! {
 // ///////////////////////////////////
 #[no_mangle]
 fn wait() {
-    let mut counter = 0 as u16;
-    counter -= 1;
+    let mut counter = 65535 as u16;
     while counter != 0 {
         counter -= 1;
     }
@@ -77,19 +76,27 @@ fn wait() {
 extern "C" fn kmain() {
     let mut gpio = gpio::Gpio::new();
     gpio.init();
-    gpio.out_high(19);
-    gpio.out_high(20);
-    gpio.out_high(21);
-    gpio.out_high(22);
+    gpio.out_low(19);
+    gpio.out_low(20);
+    gpio.out_low(21);
+    gpio.out_low(22);
 
     let mut uart = uart::Uart::new(0x1001_3000);
     uart.init();
 
     loop {
+        gpio.out_high(20);
+        wait();
+        gpio.out_low(20);
         gpio.out_high(19);
         wait();
         gpio.out_low(19);
+        gpio.out_high(21);
         wait();
+        gpio.out_low(21);
+        gpio.out_high(22);
+        wait();
+        gpio.out_low(22);
     }
 
     loop {
