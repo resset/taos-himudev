@@ -26,79 +26,33 @@ impl Uart {
     pub fn init(&mut self) {
         let ptr = self.base_address as *mut u32;
         unsafe {
-            // // First, set the word length, which
-            // // are bits 0 and 1 of the line control register (LCR)
-            // // which is at base_address + 3
-            // // We can easily write the value 3 here or 0b11, but I'm
-            // // extending it so that it is clear we're setting two individual
-            // // fields
-            // //                         Word 0     Word 1
-            // //                         ~~~~~~     ~~~~~~
-            // ptr.add(3).write_volatile((1 << 0) | (1 << 1));
-
-            // // Now, enable the FIFO, which is bit index 0 of the FIFO
-            // // control register (FCR at offset 2).
-            // // Again, we can just write 1 here, but when we use left shift,
-            // // it's easier to see that we're trying to write bit index #0.
-            // ptr.add(2).write_volatile(1 << 0);
-
-            // // Enable receiver buffer interrupts, which is at bit index
-            // // 0 of the interrupt enable register (IER at offset 1).
-            // ptr.add(1).write_volatile(1 << 0);
-
-            // // If we cared about the divisor, the code below would set the divisor
-            // // from a global clock rate of 22.729 MHz (22,729,000 cycles per second)
-            // // to a signaling rate of 2400 (BAUD). We usually have much faster signalling
-            // // rates nowadays, but this demonstrates what the divisor actually does.
-            // // The formula given in the NS16500A specification for calculating the divisor
-            // // is:
-            // // divisor = ceil( (clock_hz) / (baud_sps x 16) )
-            // // So, we substitute our values and get:
-            // // divisor = ceil( 22_729_000 / (2400 x 16) )
-            // // divisor = ceil( 22_729_000 / 38_400 )
-            // // divisor = ceil( 591.901 ) = 592
-
-            // // The divisor register is two bytes (16 bits), so we need to split the value
-            // // 592 into two bytes. Typically, we would calculate this based on measuring
-            // // the clock rate, but again, for our purposes [qemu], this doesn't really do
-            // // anything.
-            // let divisor: u16 = 592;
-            // let divisor_least: u8 = (divisor & 0xff).try_into().unwrap();
-            // let divisor_most: u8 = (divisor >> 8).try_into().unwrap();
-
-            // // Notice that the divisor register DLL (divisor latch least) and DLM (divisor latch most)
-            // // have the same base address as the receiver/transmitter and the interrupt enable register.
-            // // To change what the base address points to, we open the "divisor latch" by writing 1 into
-            // // the Divisor Latch Access Bit (DLAB), which is bit index 7 of the Line Control Register (LCR)
-            // // which is at base_address + 3.
-            // let lcr = ptr.add(3).read_volatile();
-            // ptr.add(3).write_volatile(lcr | 1 << 7);
-
-            // // Now, base addresses 0 and 1 point to DLL and DLM, respectively.
-            // // Put the lower 8 bits of the divisor into DLL
-            // ptr.add(0).write_volatile(divisor_least);
-            // ptr.add(1).write_volatile(divisor_most);
-
-            // // Now that we've written the divisor, we never have to touch this again. In hardware, this
-            // // will divide the global clock (22.729 MHz) into one suitable for 2,400 signals per second.
-            // // So, to once again get access to the RBR/THR/IER registers, we need to close the DLAB bit
-            // // by clearing it to 0. Here, we just restore the original value of lcr.
-            // ptr.add(3).write_volatile(lcr);
-
+            // Set divisor of 64 MHz clock (+1).
             let divisor: u32 = 555;
             ptr.add(6).write_volatile(divisor);
 
+            // Set txen bit to 0.
+            ptr.add(2).write_volatile(0);
+
             // Set rxen bit to 1 to enable receive.
             let rxctrl = ptr.add(3).read_volatile();
-            ptr.add(2).write_volatile(rxctrl | 1 << 0);
+            ptr.add(3).write_volatile(rxctrl | 1 << 0);
+
+            // Enable IOF for GPIO 16 (RX) and 17 (TX).
+            // This is poorly documented in the manual as of now (04.2020).
+            let ptr_gpio = 0x1001_2000 as *mut u32;
+            let ioef_sel = ptr_gpio.add(15).read_volatile();
+            // Select IOF0 for pins 16 and 17.
+            ptr_gpio.add(15).write_volatile(ioef_sel & !((1 << 16) | (1 << 17)));
+            let ioef_en = ptr_gpio.add(14).read_volatile();
+            // Enable IOF on pins 16 and 17 (those are no longer simple GPIOs).
+            ptr_gpio.add(14).write_volatile(ioef_en | (1 << 16) | (1 << 17));
         }
     }
 
-    #[no_mangle]
     pub fn put(&mut self, c: u8) {
         let ptr = self.base_address as *mut u32;
         unsafe {
-            ptr.add(0).write_volatile((c & 0xff) as u32);
+            ptr.add(0).write_volatile(c.into());
             // Set txen bit to 1 to enable transmitter.
             let txctrl = ptr.add(2).read_volatile();
             ptr.add(2).write_volatile(txctrl | 1 << 0);
