@@ -52,6 +52,9 @@ impl Uart {
     pub fn put(&mut self, c: u8) {
         let ptr = self.base_address as *mut u32;
         unsafe {
+            // Wait until the FIFO full flag is cleared.
+            while ptr.add(0).read_volatile() & (1 << 31) != 0 {}
+            // Put character into a FIFO.
             ptr.add(0).write_volatile(c.into());
             // Set txen bit to 1 to enable transmitter.
             let txctrl = ptr.add(2).read_volatile();

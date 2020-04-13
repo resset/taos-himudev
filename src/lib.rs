@@ -109,7 +109,7 @@ extern "C" fn kmain() {
         gpio.out_high(22);
         wait();
         gpio.out_low(22);
-        print!("Hello, World!\r\n");
+        println!("Hello, World!");
     }
 }
 
