@@ -42,18 +42,23 @@ impl Uart {
             let ptr_gpio = 0x1001_2000 as *mut u32;
             let ioef_sel = ptr_gpio.add(15).read_volatile();
             // Select IOF0 for pins 16 and 17.
-            ptr_gpio.add(15).write_volatile(ioef_sel & !((1 << 16) | (1 << 17)));
+            ptr_gpio
+                .add(15)
+                .write_volatile(ioef_sel & !((1 << 16) | (1 << 17)));
             let ioef_en = ptr_gpio.add(14).read_volatile();
             // Enable IOF on pins 16 and 17 (those are no longer simple GPIOs).
-            ptr_gpio.add(14).write_volatile(ioef_en | (1 << 16) | (1 << 17));
+            ptr_gpio
+                .add(14)
+                .write_volatile(ioef_en | (1 << 16) | (1 << 17));
         }
     }
 
     pub fn put(&mut self, c: u8) {
         let ptr = self.base_address as *mut u32;
+        const TXDATA_FULL: u32 = 1 << 31;
         unsafe {
             // Wait until the FIFO full flag is cleared.
-            while ptr.add(0).read_volatile() & (1 << 31) != 0 {}
+            while ptr.add(0).read_volatile() & TXDATA_FULL != 0 {}
             // Put character into a FIFO.
             ptr.add(0).write_volatile(c.into());
             // Set txen bit to 1 to enable transmitter.
@@ -64,13 +69,14 @@ impl Uart {
 
     pub fn get(&mut self) -> Option<u8> {
         let ptr = self.base_address as *mut u32;
+        const RXDATA_EMPTY: u32 = 1 << 31;
         unsafe {
-            let rxdata = ptr.add(1).read_volatile() as u32;
-            if rxdata & 0x8000_000 != 0 {
+            let rxdata = ptr.add(1).read_volatile();
+            if rxdata & RXDATA_EMPTY != 0 {
                 // The empty bit is 1, meaning no data
                 None
             } else {
-                // The empty bit is 0, meaning data!
+                // The empty bit is 0, we have data!
                 Some(ptr.add(1).read_volatile() as u8)
             }
         }
