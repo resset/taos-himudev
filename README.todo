@@ -11,3 +11,5 @@
 ✔ Write simple GPIO driver (for LEDs). @done (13.04.2020, 16:01:41)
 ☐ Debug Rust-compiled binary from flash of hIMUdev using J-Link via VSCode.
 ☐ Run UART example on hIMUdev.
+    ☐ Try to fix formatted print version.
+    ☐ Fix UART RX FIFO usage.
