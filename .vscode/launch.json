@@ -8,30 +8,25 @@
             "name": "debug-load",
             "type": "gdb",
             "request": "launch",
-            "target": "./taos.elf",
             "cwd": "${workspaceRoot}",
-            "valuesFormatting": "parseText",
+            "target": "taos.elf",
             "gdbpath": "riscv64-unknown-linux-gnu-gdb",
             "autorun": [
-                "target extended-remote localhost:3333",
-                "monitor reset halt",
-                "load",
-                "tbreak kmain"
-            ]
+                "source -v debug-load.gdb"
+            ],
+            "valuesFormatting": "prettyPrinters"
         },
         {
             "name": "debug-noload",
             "type": "gdb",
             "request": "launch",
-            "target": "./taos.elf",
             "cwd": "${workspaceRoot}",
-            "valuesFormatting": "parseText",
+            "target": "taos.elf",
             "gdbpath": "riscv64-unknown-linux-gnu-gdb",
             "autorun": [
-                "target extended-remote localhost:3333",
-                "monitor reset halt",
-                "tbreak kmain"
-            ]
+                "source -v debug-noload.gdb"
+            ],
+            "valuesFormatting": "prettyPrinters"
         }
     ]
 }

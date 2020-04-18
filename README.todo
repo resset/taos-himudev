@@ -12,4 +12,5 @@
 ☐ Debug Rust-compiled binary from flash of hIMUdev using J-Link via VSCode.
 ☐ Run UART example on hIMUdev.
     ☐ Try to fix formatted print version.
+        ✔ Fix debugging problems. @done (19.04.2020, 01:00:52)
     ☐ Fix UART RX FIFO usage.

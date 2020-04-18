@@ -130,3 +130,20 @@ How to load to flash and debug via gdb?
     taos::mmio_write (address=268509192, offset=0, value=7864320) at src/lib.rs:61
     61              let reg = address as *mut u32;
     (gdb) 
+
+How to properly set gdb paths?
+
+    Please read this: https://rust-embedded.github.io/debugonomicon/
+
+    It is necessary, along with normal commands (shown above), to issue
+    `substitute-path`. In my case it is following GDB command:
+
+    set substitute-path /rustc/6ef275e6c3cb1384ec78128eceeb4963ff788dca /home/my_username/.rustup/toolchains/nightly-2019-09-25-x86_64-unknown-linux-gnu/lib/rustlib/src/rust
+
+    General case:
+
+    set substitute-path /rustc/$(rustc -Vv | grep commit-hash | cut -d' ' -f2) $(rustc --print sysroot)/lib/rustlib/src/rust
+
+    Or, in one go:
+
+    riscv64-unknown-linux-gnu-gdb -ex "set substitute-path /rustc/$(rustc -Vv | grep commit-hash | cut -d' ' -f2) $(rustc --print sysroot)/lib/rustlib/src/rust" -x debug-load.gdb taos.elf
