@@ -39,10 +39,11 @@ _start:
 1:
 #if __riscv_xlen == 32
 	sw		zero, (a0)
+	addi	a0, a0, 4
 #else
 	sd		zero, (a0)
-#endif
 	addi	a0, a0, 8
+#endif
 	bltu	a0, a1, 1b
 2:
 	# Control registers, set the stack, mstatus, mepc,
