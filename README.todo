@@ -9,7 +9,7 @@
 ✔ Run Rust-compiled binary from flash of hIMUdev using OpenOCD/JTAG-lock-pick with gdb. @done (9.04.2020, 22:10:48)
 ✔ Debug in VSCode via OpenOCD. @done (9.04.2020, 23:02:19)
 ✔ Write simple GPIO driver (for LEDs). @done (13.04.2020, 16:01:41)
-☐ Debug Rust-compiled binary from flash of hIMUdev using J-Link via VSCode.
+✔ Debug Rust-compiled binary from flash of hIMUdev using J-Link via VSCode. @done (26.04.2020, 22:39:32)
 ☐ Run UART example on hIMUdev.
     ☐ Try to fix formatted print version.
         ✔ Fix debugging problems. @done (19.04.2020, 01:00:52)
