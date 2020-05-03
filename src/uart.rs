@@ -21,6 +21,7 @@ impl Write for Uart {
 impl Uart {
     pub fn new(base_address: usize) -> Self {
         Uart { base_address }
+        //gpio = gpio::Gpio::new();
     }
 
     pub fn init(&mut self) {
@@ -82,3 +83,5 @@ impl Uart {
         }
     }
 }
+
+//pub mod gpio;

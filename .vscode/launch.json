@@ -12,7 +12,7 @@
             "target": "taos.elf",
             "gdbpath": "riscv64-unknown-linux-gnu-gdb",
             "autorun": [
-                "source -v debug-load.gdb"
+                "source -v init_load.gdb"
             ],
             "valuesFormatting": "prettyPrinters"
         },
@@ -24,7 +24,7 @@
             "target": "taos.elf",
             "gdbpath": "riscv64-unknown-linux-gnu-gdb",
             "autorun": [
-                "source -v debug-noload.gdb"
+                "source -v init_noload.gdb"
             ],
             "valuesFormatting": "prettyPrinters"
         }

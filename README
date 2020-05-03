@@ -146,7 +146,7 @@ How to properly set gdb paths?
 
     Or, in one go:
 
-    riscv64-unknown-linux-gnu-gdb -ex "set substitute-path /rustc/$(rustc -Vv | grep commit-hash | cut -d' ' -f2) $(rustc --print sysroot)/lib/rustlib/src/rust" -x debug-load.gdb taos.elf
+    riscv64-unknown-linux-gnu-gdb -ex "set substitute-path /rustc/$(rustc -Vv | grep commit-hash | cut -d' ' -f2) $(rustc --print sysroot)/lib/rustlib/src/rust" -x init_load.gdb taos.elf
 
 How to debug using J-Link?
 
